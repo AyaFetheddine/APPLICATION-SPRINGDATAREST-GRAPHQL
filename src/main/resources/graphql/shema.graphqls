@@ -1,10 +1,27 @@
 type Query {
-    listEtudiants: [Etudiant]
-    centres: [Centre]
+    # Renommage de listEtudiants en getAllEtudiants
+    getAllEtudiants: [Etudiant]
+    # Ajout de la recherche par ID
+    getEtudiantById(id: ID): Etudiant
+
+    # Renommage de centres en getAllCentres
+    getAllCentres: [Centre]
+    # Ajout de la recherche par ID
+    getCentreById(id: ID): Centre
 }
 
 type Mutation {
-    addEtudiant(etudiant: EtudiantInput!): Etudiant
+    # 'etudiant' est changé en 'etudiantDTO' et le type est 'EtudiantDTO'
+    addEtudiant(etudiantDTO: EtudiantDTO): Etudiant
+    # Ajout de la mutation update
+    updateEtudiant(id: ID, etudiantDTO: EtudiantDTO): Etudiant
+    # Ajout de la mutation delete
+    deleteEtudiant(id: ID): String
+}
+
+type Subscription {
+    etudiantAdded: Etudiant
+    etudiantRemoved: String
 }
 
 type Etudiant {
@@ -22,11 +39,15 @@ type Centre {
     listEtudiants: [Etudiant]
 }
 
-input EtudiantInput {
+# Renommage de EtudiantInput en EtudiantDTO pour correspondre au code Java
+input EtudiantDTO {
     nom: String
     prenom: String
-    genre: Genre
+    genre: Genre # Assurez-vous que c'est 'Genre' (l'enum) et non 'String'
     centreId: ID
 }
 
-enum Genre { Homme Femme }
+enum Genre {
+    Homme
+    Femme
+}
